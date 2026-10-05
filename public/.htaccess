@@ -1,0 +1,35 @@
+#----------------------------------------
+# Répertoire : /
+#----------------------------------------
+
+# Le serveur doit suivre les liens symboliques
+Options +followSymlinks
+
+#Activation du module de réécriture d'URL :
+RewriteEngine on
+
+# Ne pas réécrire les requêtes qui correspondent à un fichier ou dossier existant (css, js, images, pdf, zip, etc)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# RÈGLES DE RÉ-ÉCRITURE
+
+# DÉTAIL D'UN PROJET
+RewriteRule ^projets\/([1-9][0-9]*)\/([a-z0-9-]+)\.html$ index.php?projets=show&id=$1&slug=$2 [QSA,L]
+
+# SUPPRESSION D'UN PROJET
+RewriteRule ^projets\/delete\/([1-9][0-9]*)\/([a-z0-9-]+)\.html$ index.php?projets=delete&id=$1&slug=$2 [QSA,L]
+
+# AJOUT D'UN PROJET
+RewriteRule ^projects\/add\/form\.html$ index.php?projets=add-form [QSA,L]
+RewriteRule ^projects\/add\/insert\.html$ index.php?projets=add-insert [QSA,L]
+
+# MODIFICATION D'UN PROJET
+RewriteRule ^projects\/([1-9][0-9]*)\/([a-z0-9-]+)\/edit\/form\.html$ index.php?projets=edit-form&id=$1&slug=$2 [QSA,L]
+RewriteRule ^projects\/([1-9][0-9]*)\/([a-z0-9-]+)\/edit\/update\.html$ index.php?projets=edit-update&id=$1&slug=$2 [QSA,L]
+
+# --------------------------------------------
+# FALLBACK
+# Toute autre URL non prise en charge par une route ci-dessus part vers le front controller
+RewriteRule ^ index.php [L]
